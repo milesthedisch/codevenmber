@@ -39,9 +39,6 @@ let springs = [];
 function setup(e) {
   springs = generateSprings(n || 10);
 
-
-
-
   draw();
 }
 
