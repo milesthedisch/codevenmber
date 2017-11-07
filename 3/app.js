@@ -52,7 +52,7 @@ const spring = Object.assign(o, {
 
     const dist = Math.hypot(dx, dy);
 
-    const springForce = (dist - offset) * bouncyness;
+    const springForce = (dist - offset * Math.random()) * bouncyness;
     
     const ax =  dx / dist * springForce;
     const ay =  dy / dist * springForce;
