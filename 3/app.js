@@ -5,17 +5,16 @@ const h = canvas.height = window.innerHeight;
 const ctx = canvas.getContext('2d');
 
 const n = 200;
-const bouncyness = 0.3;
-const offset = 300;
-let friction = 0.6;
-const theta = 4;
-const amp = 10
+const bouncyness = 0.7;
+const offset = 500;
+let friction = 0.9;
 
 window.onload = setup;
 
 const o = Object.create(null);
 const spring = Object.assign(o, {
   init(id) {
+    this.offset = offset * Math.random() + 10;
     this.id = id;
     this.velocityX = Math.random() * 500 + 10;
     this.velocityY = Math.random() * 100 + 50;
@@ -52,7 +51,7 @@ const spring = Object.assign(o, {
 
     const dist = Math.hypot(dx, dy);
 
-    const springForce = (dist - offset * Math.random()) * bouncyness;
+    const springForce = (dist - this.offset) * bouncyness;
     
     const ax =  dx / dist * springForce;
     const ay =  dy / dist * springForce;
@@ -80,9 +79,9 @@ function draw() {
   springs.forEach(s => {
     let dist = Math.hypot(s.velocityX, s.velocityY);
 
-    ctx.shadowBlur = (dist) + 10;
-    ctx.shadowColor = `rgba(${Math.floor(dist * 25)}, ${Math.floor(dist)}, ${Math.floor(100 * Math.random())}, ${(dist) * 2}`;
-    ctx.fillStyle = `rgba(${Math.floor(dist * 25)}, ${Math.floor(dist)}, ${Math.floor(100 * Math.random())}, ${1/dist}`;
+    ctx.shadowBlur = (dist) + 20;
+    ctx.shadowColor = `rgba(${Math.floor(dist * 25 * 2 + 100)}, ${5}, ${Math.floor(dist * 100 + 2)}, ${(dist) * 2 + 2}`;
+    ctx.fillStyle = `rgba(${Math.floor(dist * 25 * 2 + 100)}, ${5}, ${Math.floor(100 * Math.random())}, ${1/dist / 10}`;
     ctx.beginPath();
     ctx.arc(s.positionX, s.positionY, 10, 0, Math.PI * 2);
     ctx.fill();
@@ -98,12 +97,7 @@ function draw() {
 
 function update() {  
   springs.forEach(s => {
-    springs.filter(_s => s !== _s)
-      .forEach(x => {
-        s.springTo(x.positionX, x.positionY);
-        x.springTo(s.positionY, s.positionX);
-      })
-
+    s.springTo(w/2, h/2);
     s.accelerate();
     s.updatePosition();   
   });
