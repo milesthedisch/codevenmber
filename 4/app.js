@@ -13,15 +13,25 @@ let cy=h/2;
 
 window.onload = setup;
 
+const thandler = ({layerX, layerY}) => {cx = layerX, cy = layerY}
+const whandler = ({clientX, clientY}) => {cx = clientX, cy = clientY}
+
+if (window.hasOwnProperty('ontouchmove')) {
+  friction = 0.7;
+  window.ontouchmove = thandler;
+}
+
+window.onmousemove = whandler;
+
 const o = Object.create(null);
 const spring = Object.assign(o, {
   init(id) {
     this.offset = offset * Math.random() + 10 | 0;
     this.id = id;
-    this.velocityX = Math.random() * 500 + 10 | 0;
-    this.velocityY = Math.random() * 100 + 50 | 0;
-    this.positionX = (w/4 * Math.random()) + (Math.random() * w/2 + 100) | 0;
-    this.positionY = (h/4 * Math.random()) + (Math.random() * h/2 + 100) | 0;
+    this.velocityX = Math.random() * 500 | 0;
+    this.velocityY = Math.random() * 100 | 0;
+    this.positionX = (w/2 * Math.random()) | 0;
+    this.positionY = (h/2 * Math.random()) | 0;
     this.accelerationX = Math.random() * 2 + 10 | 0;
     this.accelerationY = Math.random() * 2 + 10 | 0;
     return this;
@@ -79,11 +89,16 @@ function draw() {
   update();
 
   springs.forEach(s => {
-    let dist = Math.hypot(s.velocityX, s.velocityY);
+    let dist = Math.hypot(s.velocityX, s.velocityY) + 2;
 
-    ctx.shadowBlur = (dist) + 20;
-    ctx.shadowColor = `rgba(${Math.floor(dist * 25 * 2 + 100) | 0}, ${5}, ${Math.floor(dist * 100 + 2) | 0}, ${(dist) * 2 + 2}`;
-    ctx.fillStyle = `rgba(${Math.floor(dist * 25 * 2 + 100) | 0}, ${5}, ${Math.floor(100 * Math.random()) | 0}, ${1/dist / 10}`;
+    let r = (dist * (cx/100) + 100) | 0;
+    let g = (dist * (cy/100) + 20) | 0;
+    let b = (dist) | 0
+    let a = 1/dist;
+
+    ctx.shadowBlur = (dist) + 20 | 0;
+    ctx.shadowColor = `rgba(${r}, ${g}, ${b}, ${1}`;
+    ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${1}`;
     ctx.beginPath();
     ctx.arc(s.positionX, s.positionY, 10, 0, Math.PI * 2);
     ctx.fill();
@@ -99,7 +114,7 @@ function draw() {
 
 function update() {  
   springs.forEach(s => {
-    s.springTo(w/2, h/2);
+    s.springTo(cx, cy);
     s.accelerate();
     s.updatePosition();   
   });

@@ -1,13 +1,13 @@
 const canvasElm = document.getElementsByTagName('canvas');
 const canvas = canvasElm[0];
-const w = canvas.width = window.innerWidth / 4;
-const h = canvas.height = window.innerHeight / 4;
+const w = canvas.width = window.innerWidth / 5 | 0;
+const h = canvas.height = window.innerHeight / 5 | 0;
 const ctx = canvas.getContext('2d');
 
 window.onload = init;
 
 const o = Object.create(null);
-const amnt = 2;
+const amnt = 1;
 
 const ball = Object.assign(o, {
   init() { 
@@ -35,25 +35,25 @@ function init() {
 
 function update(data) {
 
-  for (let x = 0; x < w; x++) {
-    for (let y = 0; y < h; y++) {
+  for (let x = 0; x < w | 0; x++ | 0) {
+    for (let y = 0; y < h | 0; y++ | 0) {
       let sum = 0;
-      let index = (x + y * w) * 4;
+      let index = (x + y * w) * 4 | 0;
 
       for (let i in balls) {
         let ball = balls[i];
-        sum += 100000 * ball.radius / Math.hypot(x - ball.position[0], y - ball.position[1]);
+        sum += 500 * ball.radius / Math.hypot(x - ball.position[0], y - ball.position[1]) | 0;
       }
 
       let r = index;
-      let g = index + 1;
-      let b = index + 2;
-      let a = index + 3;
+      let g = index + 1 | 0;
+      let b = index + 2 | 0;
+      let a = index + 3 | 0;
 
-      data[a] = sum * /* y / 30 */ 255;
-      data[r] = sum * /* y / 30 */ 200;
-      data[g] = sum * /* y / 30 */ 200;
-      data[b] = sum * /* y / 30 */ 255;
+      data[a] = sum * y/3 + x | 0;
+      data[r] = sum * y/30 + x | 0;
+      data[g] = sum * y/30 | 0;
+      data[b] = sum * y/30 | 0;
     }
   }
 
@@ -61,15 +61,15 @@ function update(data) {
   ctx.putImageData(red, 0, 0);
 
   balls.forEach((ball) => {
-    ball.position[0] += ball.velocity[0];
-    ball.position[1] += ball.velocity[1];
+    ball.position[0] += ball.velocity[0] | 0;
+    ball.position[1] += ball.velocity[1] | 0;
 
     if (ball.position[0] > w || ball.position[0] < 0) {
-      ball.velocity[0] *= -1;
+      ball.velocity[0] *= -1 | 0;
     } 
 
     if (ball.position[1] > h || ball.position[1] < 0) {
-      ball.velocity[1] *= -1;
+      ball.velocity[1] *= -1 | 0;
     }
 
     // ctx.beginPath()
