@@ -50,10 +50,10 @@ function update(data) {
       let b = index + 2;
       let a = index + 3;
 
-      data[a] = sum * y / 30 / 255;
-      data[r] = sum * y / 30 / 200;
-      data[g] = sum * y / 30 / 200;
-      data[b] = sum * y / 30 / 255;
+      data[a] = sum * /* y / 30 */ 255;
+      data[r] = sum * /* y / 30 */ 200;
+      data[g] = sum * /* y / 30 */ 200;
+      data[b] = sum * /* y / 30 */ 255;
     }
   }
 
