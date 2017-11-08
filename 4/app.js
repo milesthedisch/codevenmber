@@ -4,7 +4,7 @@ const w = canvas.width = window.innerWidth;
 const h = canvas.height = window.innerHeight;
 const ctx = canvas.getContext('2d');
 
-const n = 100;
+const n = 200;
 const bouncyness = 0.1;
 const offset = 500;
 let friction = 0.9;
@@ -13,15 +13,14 @@ let cy=h/2;
 
 window.onload = setup;
 
-const thandler = ({layerX, layerY}) => {cx = layerX, cy = layerY}
-const whandler = ({clientX, clientY}) => {cx = clientX, cy = clientY}
+const handler = ({pageX, pageY}) => {cx = pageX, cy = pageY}
 
 if (window.hasOwnProperty('ontouchmove')) {
   friction = 0.7;
-  window.ontouchmove = thandler;
 }
 
-window.onmousemove = whandler;
+window.onmousemove = handler;
+window.ontouchmove = handler;
 
 const o = Object.create(null);
 const spring = Object.assign(o, {
@@ -58,8 +57,8 @@ const spring = Object.assign(o, {
     this.accelerationY = 0; 
   },
   springTo(x, y) {
-    const dx = x - this.positionX;
-    const dy = y - this.positionY;
+    const dx = x - this.positionX | 0;
+    const dy = y - this.positionY | 0;
 
     const dist = Math.hypot(dx, dy);
 
@@ -91,18 +90,14 @@ function draw() {
   springs.forEach(s => {
     let dist = Math.hypot(s.velocityX, s.velocityY) + 2;
 
-    let r = (dist * (cx/100) + 100) | 0;
-    let g = (dist * (cy/100) + 20) | 0;
-    let b = (dist) | 0
-    let a = 1/dist;
+    let r = (dist * (cx/50)) | 0;
+    let g = (dist * (cy/50)) | 0;
+    let b = (dist * 2) | 0
+    let a = 1 / dist;
 
-    ctx.shadowBlur = (dist) + 20 | 0;
-    ctx.shadowColor = `rgba(${r}, ${g}, ${b}, ${1}`;
-    ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${1}`;
-    ctx.beginPath();
-    ctx.arc(s.positionX, s.positionY, 10, 0, Math.PI * 2);
-    ctx.fill();
-
+    ctx.shadowBlur = (dist + dist) + 20 | 0;
+    ctx.shadowColor = `rgba(${r}, ${g}, ${b}, ${a * 100}`;
+    ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${dist / 50 + 0.2}`;
     ctx.beginPath();
     ctx.arc(s.positionX, s.positionY, 10, 0, Math.PI * 2);
     ctx.fill();

@@ -13,15 +13,13 @@ let cy=h/2;
 
 window.onload = setup;
 
-const thandler = ({layerX, layerY}) => {cx = layerX, cy = layerY}
-const whandler = ({clientX, clientY}) => {cx = clientX, cy = clientY}
+const handler = ({pageX, pageY}) => {cx = pageX, cy = pageY}
 
 if (window.hasOwnProperty('ontouchmove')) {
   friction = 0.7;
-  window.ontouchmove = thandler;
 }
 
-window.onmousemove = whandler;
+window.onmousemove = handler;
 
 const o = Object.create(null);
 const spring = Object.assign(o, {
