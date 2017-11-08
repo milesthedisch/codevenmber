@@ -2,8 +2,8 @@
 
 Just some pyscedlic fun, and some arty shit.
 
-- ["Cook and egg on your laptop for wavess"](/1)
-- ["Some narly stuff"](/2)
-- ["Some more narly stuff"](/3)
-- ["Same shit different day"](/4)
-- ["Coming soon"](/5)
+- ["Cook and egg on your laptop for wavess"](https://milesthedisch.github.io/codevenmber/1)
+- ["Some narly stuff"](https://milesthedisch.github.io/codevenmber/2)
+- ["Some more narly stuff"](https://milesthedisch.github.io/codevenmber/3)
+- ["Same shit different day"](https://milesthedisch.github.io/codevenmber/4)
+- ["Coming soon"](https://milesthedisch.github.io/codevenmber/5)
