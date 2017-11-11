@@ -4,122 +4,86 @@ const w = canvas.width = window.innerWidth;
 const h = canvas.height = window.innerHeight;
 const ctx = canvas.getContext('2d');
 
-const n = 100;
-const bouncyness = 0.1;
-const offset = 500;
-let friction = 0.9;
-let cx=w/2;
-let cy=h/2;
+let angle = 1 / w/2 - 0.04;
+let height = 200;
+let calls = 0;
 
-window.onload = setup;
-
-const handler = ({pageX, pageY}) => {cx = pageX, cy = pageY}
-
-if (window.hasOwnProperty('ontouchmove')) {
-  friction = 0.7;
+window.onmousemove = (e) => {
+  angle = (20 / e.pageX);
+  height = e.pageY / 3;
 }
 
-window.onmousemove = handler;
+window.ontouchmove = (e) => {
+  angle = (20 / e.pageX) * Math.PI * 2;
+  height = e.pageY / 5;
+}
 
-const o = Object.create(null);
-const spring = Object.assign(o, {
-  init(id) {
-    this.offset = offset * Math.random() + 10 | 0;
-    this.id = id;
-    this.velocityX = Math.random() * 500 | 0;
-    this.velocityY = Math.random() * 100 | 0;
-    this.positionX = (w/2 * Math.random()) | 0;
-    this.positionY = (h/2 * Math.random()) | 0;
-    this.accelerationX = Math.random() * 2 + 10 | 0;
-    this.accelerationY = Math.random() * 2 + 10 | 0;
-    return this;
-  },
-  accelerate(x, y) {
-    this.velocityX += (x || this.accelerationX);
-    this.velocityY += (y || this.accelerationY);
-  },
-  updatePosition() {
-    if (Math.abs(this.velocityY) < 0.005 && Math.abs(this.velocityX) < 0.005) {
-      this.stop();
-    }
+const cartesianing = () => {
+  ctx.translate(canvas.width/2,canvas.height);
+  ctx.save();
+}
 
-    this.velocityY *= friction;
-    this.velocityX *= friction;
+const line = (x0, y0, x1, y1) => {
+  ctx.beginPath();
+  ctx.moveTo(x0, y0);
+  ctx.lineTo(x1, y1);
+  ctx.stroke();
+}
 
-    this.positionX += this.velocityX;
-    this.positionY += this.velocityY;
-  },
-  stop() {
-    this.velocityY = 0;
-    this.velocityX = 0;
-    this.accelerationX = 0;
-    this.accelerationY = 0; 
-  },
-  springTo(x, y) {
-    const dx = x - this.positionX;
-    const dy = y - this.positionY;
+const colorIn = (len) => {
+  ctx.shadowBlur = (10 * (5/len) ) | 0;
+  ctx.shadowColor = `rgba(100, ${len * 255 | 0}, 100, 1)`;
+  ctx.strokeStyle = `rgba(${len | 0}, ${42}, 40, ${len/80})`;
+  ctx.lineWidth = len / 30;
+}
 
-    const dist = Math.hypot(dx, dy);
-
-    const springForce = (dist - this.offset) * bouncyness;
-    
-    const ax =  dx / dist * springForce;
-    const ay =  dy / dist * springForce;
-
-    this.accelerationX = ax;
-    this.accelerationY = ay; 
+function branch(x, y, len) {
+  if (len < 15) {
+    return;
   }
 
-});
+  len = len * 0.67;
+  line(0, 0, 0, -len);
 
-let s = Object.create(spring).init();
+  colorIn(len);
 
-function setup(e) {
-  springs = generateSprings(n || 10);
+  ctx.save();
 
-  draw();
+  ctx.translate(0, -len);
+  
+  ctx.save()
+  ctx.rotate(Math.PI / 5 + angle);
+  branch(x, y, len - (Math.sin(len) + 0.04));
+  ctx.restore();
+
+  ctx.save();
+  ctx.rotate(-Math.PI / 5 - angle);
+  branch(x, y, len - (Math.sin(len) + 0.04));
+  ctx.restore(); 
+
+  ctx.save()
+  ctx.rotate(Math.PI * (2 * angle));
+  branch(x, y, len + 1);
+  ctx.restore();
+
+  ctx.save()
+  ctx.rotate(-Math.PI * (2 * angle));
+  branch(x, y, len / 2);
+  ctx.restore();  
+
+  ctx.restore();
 }
 
+const start = () => {
+  // Lets center this shit.
+  cartesianing();
 
-function draw() {
-  ctx.clearRect(0, 0, w, h);
+  (function animate() {
+    ctx.clearRect(-w/2, -h, w, h)  
 
-  update();
-
-  springs.forEach(s => {
-    let dist = Math.hypot(s.velocityX, s.velocityY) + 2;
-
-    let r = (dist * (cx/100) + 100) | 0;
-    let g = (dist * (cy/100) + 20) | 0;
-    let b = (dist) | 0
-    let a = 1/dist;
-
-    ctx.shadowBlur = (dist) + 20 | 0;
-    ctx.shadowColor = `rgba(${r}, ${g}, ${b}, ${1}`;
-    ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${1}`;
-    ctx.beginPath();
-    ctx.arc(s.positionX, s.positionY, 10, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.arc(s.positionX, s.positionY, 10, 0, Math.PI * 2);
-    ctx.fill();
-  });
- 
-
-  requestAnimationFrame(draw);
+    branch(0, 0, height);
+    window.requestAnimationFrame(animate);
+  })()
 }
 
-function update() {  
-  springs.forEach(s => {
-    s.springTo(cx, cy);
-    s.accelerate();
-    s.updatePosition();   
-  });
-}
-
-function generateSprings(n) {
-  return Array(n)
-    .fill(1)
-    .map((x, i) => Object.create(spring).init(i));
-}
+window.onload = start;
