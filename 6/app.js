@@ -63,8 +63,8 @@ const start = () => {
       //   b.start.x -= dx / 30 | 0;
       // }
       
-      b.vel.x = (rnd1 * Math.sin((i * i) * 200)) / 10;
-      b.vel.y = (rnd2 * Math.cos((i * i) * 200)) / 10;
+      b.vel.x = (rnd1 * Math.sin((i * i) * 200) * (i / 10)) / 10;
+      b.vel.y = (rnd2 * Math.cos((i * i) * 200) * (i / 10)) / 10;
 
       b.moveEnd();
         
