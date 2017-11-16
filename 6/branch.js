@@ -20,11 +20,12 @@ const branchCreator = function (ctx) {
   const branch = Object.create(null);
 
   Object.assign(branch, {
-    init(start = {x: 0, y: -20}, end = {x: 0, y: -100}) {
+    init(start = {x: 0, y: -20}, end = {x: 0, y: -200}) {
       this.start = start;
       this.end = end;
       this.vel = { x: 0, y: 0 };
       this.accel = { x: 0, y: 0 };
+      this.len;
       return this;
     },
 
@@ -40,7 +41,7 @@ const branchCreator = function (ctx) {
       rotatedVecA.y += this.end.y;
       rotatedVecA.x += this.end.x;
 
-      const rotatedVecB = rotate(-angle + (Math.random() * 0.4), dx, dy);
+      const rotatedVecB = rotate(-angle, dx, dy);
 
       rotatedVecB.y *= len;
       rotatedVecB.x *= len;
@@ -62,26 +63,34 @@ const branchCreator = function (ctx) {
     },
 
     moveEnd() {
+      this.vel.x *= window.friction;
+      this.vel.y *= window.friction;
+
       this.end.x += this.vel.x;
       this.end.y += this.vel.y;
     },
 
-    accelerate(x, y) {
+    accelerate() {
       this.vel.x += this.accel.x;
       this.vel.y += this.accel.y;
     },
 
     spring(start, end, springConstant=0.2) {
-      const dx = start.x - end.x;
-      const dy = start.y - end.y;
+      const dx = (start.x) - (end.x);
+      const dy = (start.y) - (end.y);
+
+      const dist = Math.hypot(dx, dy);
+
+      const force = (dist - 50) * 10 / dist;
 
       // Star Wars //
-      const forceX = dx * springConstant;
-      const forceY = dy * springConstant;
+      const forceX = dx / dist * force;
+      const forceY = dy / dist * force;
 
-      this.accel.x += forceX;
-      this.accel.y += forceY;
+      this.accel.x = forceX;
+      this.accel.y = forceY;
 
+      this.accelerate();
       this.moveEnd();
     }
   });

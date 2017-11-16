@@ -4,8 +4,9 @@ const w = canvas.width = window.innerWidth;
 const h = canvas.height = window.innerHeight;
 const ctx = canvas.getContext('2d');
 
-let mx = w/2;
-let my = h/2;
+let mx = 0;
+let my = -1000;
+window.friction = 0.7;
 
 const branchs = [];
 
@@ -18,8 +19,8 @@ let branches = [];
 const rootBranch = Object.create(branchCreator(ctx))
 
 branches.push(rootBranch.init());
-branches = branches.concat(...rootBranch.duplicate(0.8 * Math.random() + 0.7, (2.4 * Math.random() + 2)));
-branches = branches.concat(...rootBranch.duplicate(0.8 * Math.random() + 0.7, (2.4 * Math.random() + 2)));
+branches = branches.concat(...rootBranch.duplicate(0.8, (2.4 * Math.random() + 2.3)));
+branches = branches.concat(...rootBranch.duplicate(0.8, (2.4 * Math.random() + 2.3)));
 
 const start = () => {
   // Lets center this shit.
@@ -50,23 +51,15 @@ const start = () => {
         ctx.lineWidth = 3 + 10/i;   
       }
 
-      // let dx = b.end.x - mx;
-      // let dy = b.end.y - my;
+      const len = Math.hypot(b.end.x - mx, b.end.y - my);
 
-      // let dist = Math.hypot(dx, dy) | 0;
+      // console.log(len);
+      b.vel.x += Math.sin(delta/2) * 10 / 50;
+      // b.vel.y += my/200 * 10 / 50;
 
-      // if (dist <= 50 && dist >= 3) {
-      //   // ctx.strokeStyle = "red";
-      //   b.end.x -= dx / 30 | 0;
-      //   b.end.y -= dy / 30 | 0;
-      //   b.start.y -= dy / 30 | 0;
-      //   b.start.x -= dx / 30 | 0;
-      // }
-      
-      b.vel.x = (rnd1 * Math.sin((i * i) * 200) * (i / 10)) / 10;
-      b.vel.y = (rnd2 * Math.cos((i * i) * 200) * (i / 10)) / 10;
-
-      b.moveEnd();
+      if (i > 1) {
+        b.spring(b.start, b.end);  
+      }
         
       b.show();
     });
@@ -77,10 +70,8 @@ const start = () => {
 
 window.onload = start;
 
-let growth = 0;
-
 const interval = setInterval(() => {
-  if (branches.length > 2000 * Math.random() + 500) { 
+  if (branches.length > 1000) { 
     clearInterval(interval);
     return; 
   }
@@ -89,12 +80,8 @@ const interval = setInterval(() => {
     .forEach((b, i) => {
       b = branches[i];
       if (!b.finished) {
-        branches.push(...b.duplicate(0.9 * Math.random(), (2.4 * Math.random() + 2.2)));  
-        branches.push(...b.duplicate(0.9 * Math.random(), (2.4 * Math.random() + 2.2)));
-        // branches.push(...b.duplicate(0.9 * Math.random(), (2.4 * Math.random() + 2.2)));
-        // branches.push(...b.duplicate(0.9 * Math.random(), (2.4 * Math.random() + 2.2)));
-        // branches.push(...b.duplicate(0.9 * Math.random(), (2.4 * Math.random() + 2.2)));
-        // branches.push(...b.duplicate(0.9 * Math.random(), (2.4 * Math.random() + 2.2)));  
+        branches.push(...b.duplicate(0.9 * Math.random() + 0.4, 2.4 * Math.random() + 2.3));  
+        branches.push(...b.duplicate(0.9 * Math.random() + 0.4, 2.4 * Math.random() + 2.3));
       }
   });
 }, 40);
