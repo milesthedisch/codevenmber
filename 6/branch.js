@@ -23,6 +23,8 @@ const branchCreator = function (ctx) {
     init(start = {x: 0, y: -20}, end = {x: 0, y: -100}) {
       this.start = start;
       this.end = end;
+      this.vel = { x: 0, y: 0 };
+      this.accel = { x: 0, y: 0 };
       return this;
     },
 
@@ -57,6 +59,30 @@ const branchCreator = function (ctx) {
     show() {
       line(this.start.x, this.start.y, this.end.x, this.end.y);
       return this;
+    },
+
+    moveEnd() {
+      this.end.x += this.vel.x;
+      this.end.y += this.vel.y;
+    },
+
+    accelerate(x, y) {
+      this.vel.x += this.accel.x;
+      this.vel.y += this.accel.y;
+    },
+
+    spring(start, end, springConstant=0.2) {
+      const dx = start.x - end.x;
+      const dy = start.y - end.y;
+
+      // Star Wars //
+      const forceX = dx * springConstant;
+      const forceY = dy * springConstant;
+
+      this.accel.x += forceX;
+      this.accel.y += forceY;
+
+      this.moveEnd();
     }
   });
 
