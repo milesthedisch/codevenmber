@@ -27,7 +27,7 @@ const branchCreator = function (ctx) {
   const branch = Object.create(null);
 
   Object.assign(branch, {
-    init(start = {x: 0, y: -20}, end = {x: 0, y: -200}) {
+    init(start = {x: 0, y: -20}, end = {x: 0, y: -250}) {
       this.start = start;
       this.end = end;
       this.vel = { x: 0, y: 0 };
@@ -36,7 +36,7 @@ const branchCreator = function (ctx) {
       return this;
     },
 
-    duplicate(len=0.9, angle=-2 * Math.PI / 3) {
+    duplicate(len=0.2, angle=-2 * Math.PI / 3) {
       const dx = this.start.x - this.end.x;
       const dy = this.start.y - this.end.y;
 
