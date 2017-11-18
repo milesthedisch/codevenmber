@@ -51,7 +51,6 @@ const start = () => {
 
       if (i > 4 && !b.finished) {
         b.spring(b.start, b.end);  
-        // b.moveEnd();
       } 
 
       let r = Math.abs(b.vel.x) + 0.5;
