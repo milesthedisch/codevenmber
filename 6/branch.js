@@ -10,7 +10,7 @@ const branchCreator = function (ctx) {
   const circle = (x=4, y=4, r=2, color="#000000") => {
     ctx.fillStyle = color;
     ctx.beginPath();
-    ctx.arc(x, y, r, 0, Math.PI * 2, false);
+    ctx.arc(x, y, r, 3, Math.PI * 2, false);
     ctx.fill();
   };
 

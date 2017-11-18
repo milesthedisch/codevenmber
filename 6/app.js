@@ -11,7 +11,7 @@ window.friction = 0.7;
 
 const branchs = [];
 
-const cartesianing = () => {
+const treesian = () => {
   ctx.translate(canvas.width/2,canvas.height);
   ctx.save();
 };
@@ -24,8 +24,8 @@ branches = branches.concat(...rootBranch.duplicate(0.7, (2.4 * Math.random() + 2
 branches = branches.concat(...rootBranch.duplicate(0.7, (2.4 * Math.random() + 2.3)));
 
 const start = () => {
-  // Lets center this shit.
-  cartesianing();
+  // Lets center ground this shit.
+  treesian();
 
   let delta = 0;
   (function animate() {
@@ -33,7 +33,9 @@ const start = () => {
     delta += 0.1 * Math.random();
 
     branches.forEach((b, i) => {
-      ctx.strokeStyle = `rgba(0,0,0,${b.dist/(b.dist+50)})`;
+      const gamma = b.dist/(b.dist+50);
+
+      ctx.strokeStyle = `rgba(${80 * b.dist/100 | 0}, ${42}, 40,${gamma})`;
       ctx.lineWidth = b.dist / 67;
 
       if (i === 0) {
@@ -65,7 +67,7 @@ const start = () => {
 window.onload = start;
 
 const interval = setInterval(() => {
-  if (branches.length > 2000) { 
+  if (branches.length > 3000) { 
     clearInterval(interval);
     return; 
   }
