@@ -7,6 +7,13 @@ const branchCreator = function (ctx) {
     ctx.stroke();
   }
 
+  const circle = (x=4, y=4, r=2, color="#000000") => {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2, false);
+    ctx.fill();
+  };
+
   const rotate = function (angle, dx, dy) {
     const cos = Math.cos(angle);
     const sin = Math.sin(angle);
@@ -25,11 +32,11 @@ const branchCreator = function (ctx) {
       this.end = end;
       this.vel = { x: 0, y: 0 };
       this.accel = { x: 0, y: 0 };
-      this.len;
+      this.dist = Math.hypot(end.x - start.x, end.y - start.y);
       return this;
     },
 
-    duplicate(len=0.67, angle=-2 * Math.PI / 3) {
+    duplicate(len=0.9, angle=-2 * Math.PI / 3) {
       const dx = this.start.x - this.end.x;
       const dy = this.start.y - this.end.y;
 
@@ -62,6 +69,10 @@ const branchCreator = function (ctx) {
       return this;
     },
 
+    leaf(color) {
+      circle(this.end.x, this.end.y, 5, color);
+    },
+
     moveEnd() {
       this.vel.x *= window.friction;
       this.vel.y *= window.friction;
@@ -80,12 +91,13 @@ const branchCreator = function (ctx) {
       const dy = (start.y) - (end.y);
 
       const dist = Math.hypot(dx, dy);
+      const offset = 50 + dist / 4;
 
-      const force = (dist - 50) * 10 / dist;
+      const force = (dist - offset) * springConstant;
 
       // Star Wars //
-      const forceX = dx / dist * force;
-      const forceY = dy / dist * force;
+      const forceX = dx * 0.67 / dist * force;
+      const forceY = dy * 0.67 / dist * force;
 
       this.accel.x = forceX;
       this.accel.y = forceY;
