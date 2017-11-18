@@ -7,8 +7,8 @@ const ctx = canvas.getContext('2d');
 let mx = 0;
 let my = -1000;
 let theta = 10;
-window.friction = 0.7;
-window.gravity = -0.05;
+window.friction = 0.67;
+window.gravity = -0;
 
 const branchs = [];
 
@@ -37,7 +37,8 @@ const start = () => {
       const gamma = b.dist/(b.dist+50);
 
       ctx.strokeStyle = `rgba(${67 * b.dist/100 | 0}, ${42}, 40,${gamma})`;
-
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round';
       ctx.lineWidth = b.dist / 67;
 
       if (i === 0) {
@@ -47,10 +48,10 @@ const start = () => {
       const len = Math.hypot(b.end.x - mx, b.end.y - my) | 0;
 
       b.vel.x += Math.sin(delta/2) * (100/b.dist + 1) / 20 // Remove random to make the branches not go crazy
-      b.vel.y += Math.sin(delta/4) * (100/b.dist + 1) / 20 // Remove random to make the branches not go crazy
+      b.vel.y += Math.sin(delta) * (100/b.dist + 1) / 20 // Remove random to make the branches not go crazy
 
-      if (i > 4 && !b.finished) {
-        b.spring(b.start, b.end);  
+      if (!b.finished) {
+        b.spring(b.start, b.end);
       } 
 
       let r = Math.abs(b.vel.x) + 0.5;
