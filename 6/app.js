@@ -8,6 +8,7 @@ let mx = 0;
 let my = -1000;
 let theta = 10;
 window.friction = 0.7;
+window.gravity = -0.05;
 
 const branchs = [];
 
@@ -36,8 +37,7 @@ const start = () => {
       const gamma = b.dist/(b.dist+50);
 
       ctx.strokeStyle = `rgba(${67 * b.dist/100 | 0}, ${42}, 40,${gamma})`;
-      // ctx.shadowBlur = 2;
-      // ctx.shadowColor = `rgba(${40 * b.dist/100 | 0}, ${42}, 40,${gamma})`;
+
       ctx.lineWidth = b.dist / 67;
 
       if (i === 0) {
@@ -59,7 +59,11 @@ const start = () => {
 
       if (!b.finished && len < 200) {
         // rainbow leafs
+        ctx.save();
+        // ctx.shadowBlur = 2;
+        // ctx.shadowColor = `rgba(${40 * b.dist/100 | 0}, ${42}, 40,${gamma})`;
         b.leaf(`rgba(${r * 255 | 0},${g * 255 | 0}, ${_b * 255 | 0},${b.dist/(b.dist+10)}`);
+        ctx.restore();
       }
         
       b.show();
@@ -87,7 +91,9 @@ const interval = setInterval(() => {
   });
 }, 40);
 
-window.onclick = () => {
+window.onclick = ({pageX, pageY}) => {
+  mx = pageX - w/2;
+  my = pageY - h;
   window.onmousemove = ({pageX, pageY}) => {
     mx = pageX - w/2;
     my = pageY - h;

@@ -77,6 +77,8 @@ const branchCreator = function (ctx) {
       this.vel.x *= window.friction;
       this.vel.y *= window.friction;
 
+      this.vel.y -= window.gravity;
+
       this.end.x += this.vel.x;
       this.end.y += this.vel.y;
     },
