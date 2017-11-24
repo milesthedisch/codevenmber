@@ -8,20 +8,54 @@
       margin: 0 auto;
       height: 100%;
     }
+
     canvas {
       margin: 0 auto;
     }
+
     div {
       position: fixed;
       top: 10%;
       left: 10%;
     }
+
+    input#a {
+      position: absolute;
+      display: block;
+      left: 10%;
+      top: 10%;
+    }
+
+    input#b {
+      position: absolute;
+      display: block;
+      left: 10%;
+      top: 15%;
+    }
+
+    input#m {
+      position: absolute;
+      display: block;
+      left: 10%;
+      top: 20%;
+    }
+
+    input#n {
+      position: absolute;
+      display: block;
+      left: 10%;
+      top: 25%;
+    }
   </style>  
 </head>
 <body>
   <canvas></canvas>
-  <div>Click tree to get leaves</div>
-  <script src='./branch.js'></script>
+  <input 
+    id="n" 
+    type="range" 
+    min="0" 
+    max="10" 
+    step="any"></input>s
   <script src='./app.js'></script>
 </body>
 </html>
