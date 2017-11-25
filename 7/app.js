@@ -81,8 +81,8 @@ function animate() {
   ctx.lineJoin = "round";
 
   var j = 0;
-  for (var y = 0; y < h; y += 120) {
-    for (var x = 0; x < w; x += 120) {
+  for (var y = 0; y < h; y += 100) {
+    for (var x = 0; x < w; x += 100) {
       j += 0.01
       ctx.fillStyle = `rgba(${100}, ${50 * (j * 3) | 0}, ${(30 * (j * 7)) | 0}, ${theta})`;
       supershape(theta, x + 50, y + 50);  
