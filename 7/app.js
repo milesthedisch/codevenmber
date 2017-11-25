@@ -73,18 +73,18 @@ function supershape(theta, ox, oy) {
 }
 
 function animate() {
-  let theta = Math.sin(((delta++ * 2) / 10) + Math.sin(delta/10)) / 2;
+  let theta = Math.sin(((delta++ * 2)/ 1000) + Math.sin(delta/10)) / 2;
       theta = Math.pow(theta + 1, 2) / 3;
 
   ctx.clearRect(0, 0, w, h);
   ctx.lineWidth = 1;
   ctx.lineJoin = "round";
-  ctx.fillStyle = `rgba(${100}, ${50}, ${30}, ${theta})`;
 
   var j = 0;
   for (var y = 0; y < h; y += 120) {
     for (var x = 0; x < w; x += 120) {
       j += 0.01
+      ctx.fillStyle = `rgba(${100}, ${50 * (j * 3) | 0}, ${(30 * (j * 7)) | 0}, ${theta})`;
       supershape(theta, x + 50, y + 50);  
     }  
   }
