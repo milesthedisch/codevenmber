@@ -6,7 +6,7 @@ const ctx = canvas.getContext('2d');
 
 let _a; 
 let _b;
-let _n = 1;
+let _n = 4;
 var amount = 2;
 
 n.oninput = ({ target: { valueAsNumber } }) => {
@@ -43,6 +43,7 @@ const sgn = (t) => t ? t / Math.abs(t) : 0;
 
 const superellipse = (a=r, b=r, i, n=1) => {
   // Superrrrrrr ELLIPSE!
+  console.log(n);
   const pow = 2/n;
   const x = Math.pow(Math.abs(Math.cos(i)), pow) * a * sgn(Math.cos(i));
   const y = Math.pow(Math.abs(Math.sin(i)), pow) * b * sgn(Math.sin(i));
@@ -54,7 +55,6 @@ let delta = 0;
 
 function supershape(theta, ox, oy) {
   ctx.beginPath();
-
 
   for (var i = 0; i < Math.PI * 2.1; i += 0.1) {
     var {x, y} = superellipse(_a, _b, i, _n * theta);

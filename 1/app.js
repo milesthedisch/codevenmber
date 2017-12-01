@@ -72,9 +72,9 @@ function update(data) {
       ball.velocity[1] *= -1 | 0;
     }
 
-    // ctx.beginPath()
-    // ctx.arc(ball.position[0], ball.position[1], ball.radius, 0, 2 * Math.PI);
-    // ctx.stroke();
+    ctx.beginPath()
+    ctx.arc(ball.position[0], ball.position[1], ball.radius, 0, 2 * Math.PI);
+    ctx.stroke();
   });
 
 
