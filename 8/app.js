@@ -95,8 +95,8 @@ function animate() {
   ctx.lineWidth = 1;
   ctx.lineJoin = "round";
   ctx.lineCap = "round";
-  ctx.strokeStyle = 'rgba(0, ' + Math.floor(255 * sine) + ', ' + 
-                         Math.floor(255 * cosine) + ', ' + 0.02 + ')'
+  ctx.strokeStyle = 'rgba(0, ' + Math.floor(250 * sine) + ', ' + 
+                         Math.floor(250 * cosine) + ', ' + 0.02 + ')'
 
   drawSupershape(10000, undefined, undefined, {
     a: ((_a || 3) * cosine * 20) + 100,
