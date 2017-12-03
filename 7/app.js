@@ -43,7 +43,6 @@ const sgn = (t) => t ? t / Math.abs(t) : 0;
 
 const superellipse = (a=r, b=r, i, n=1) => {
   // Superrrrrrr ELLIPSE!
-  console.log(n);
   const pow = 2/n;
   const x = Math.pow(Math.abs(Math.cos(i)), pow) * a * sgn(Math.cos(i));
   const y = Math.pow(Math.abs(Math.sin(i)), pow) * b * sgn(Math.sin(i));
